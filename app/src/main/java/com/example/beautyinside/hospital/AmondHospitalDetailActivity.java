@@ -129,6 +129,11 @@ public class AmondHospitalDetailActivity extends AppCompatActivity {
         );
 
         // 의료진 리스트
+// AmondHospitalDetailActivity.java 파일의 onCreate 메소드 내부 (수정 후)
+
+// ... (이전 코드)
+
+        // 의료진 리스트 (🔥 이 부분을 수정하여 3명으로 만듭니다.)
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this));
         List<DoctorData> doctors = Arrays.asList(
@@ -136,10 +141,22 @@ public class AmondHospitalDetailActivity extends AppCompatActivity {
                         "박동권",
                         R.drawable.doctor_amond_park,
                         Arrays.asList("눈성형", "지방성형", "리프팅")
+                ),
+                new DoctorData( // 🔥 강승현 원장 추가
+                        "강승현",
+                        R.drawable.doctor_amond_kang, // 임시 이미지 (프로젝트에 맞는 이미지로 변경 필요)
+                        Arrays.asList("눈성형", "보톡스", "필러")
+                ),
+                new DoctorData( // 🔥 김상헌 원장 추가
+                        "김상헌",
+                        R.drawable.doctor_amond_kim, // 임시 이미지
+                        Arrays.asList("눈성형", "지방성형", "리프팅")
                 )
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);
         recyclerDoctors.setAdapter(doctorAdapter);
+
+// ... (나머지 코드)
 
         // 3. ViewPager + 어댑터 연결
         bannerViewPager = findViewById(R.id.bannerViewPager);

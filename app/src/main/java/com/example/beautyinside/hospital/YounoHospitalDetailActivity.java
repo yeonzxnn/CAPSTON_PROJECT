@@ -113,14 +113,22 @@ public class YounoHospitalDetailActivity extends AppCompatActivity {
                 startActivity(mapIntent);
             }
         });
-        // 의료진 리스트
+// 의료진 리스트
+
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this));
         List<DoctorData> doctors = Arrays.asList(
+                // 1. 기존 김태기 의사
                 new DoctorData(
                         "김태기",
-                        R.drawable.doctor_youno_park,
+                        R.drawable.doctor_youno_park, // 기존 이미지 (drawable 폴더에 있어야 함)
                         Arrays.asList("눈성형")
+                ),
+                // 🔥 2. 양희상 의사 추가
+                new DoctorData(
+                        "양희상",
+                        R.drawable.doctor_youno_yang, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("눈성형", "리프팅", "필러") // 임시 전문 분야
                 )
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);

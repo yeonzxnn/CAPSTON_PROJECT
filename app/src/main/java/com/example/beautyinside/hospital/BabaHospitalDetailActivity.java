@@ -87,10 +87,17 @@ public class BabaHospitalDetailActivity extends AppCompatActivity {
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this));
         List<DoctorData> doctors = Arrays.asList(
+// 1. 기존 김상일 원장
                 new DoctorData(
                         "김상일",
-                        R.drawable.doctor_baba_park,
+                        R.drawable.doctor_baba_park, // 기존 이미지 (drawable 폴더에 있어야 함)
                         Arrays.asList("눈성형", "리프팅")
+                ),
+                // 🔥 2. 조성은 원장 추가
+                new DoctorData(
+                        "조성은",
+                        R.drawable.doctor_baba_jo, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("코성형", "눈성형", "기타") // 임시 전문 분야
                 )
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);

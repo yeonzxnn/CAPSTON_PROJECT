@@ -29,7 +29,7 @@ import com.example.beautyinside.hospital.MlHospitalDetailActivity;
 import com.example.beautyinside.hospital.NanaHospitalDetailActivity;
 import com.example.beautyinside.hospital.OnairHospitalDetailActivity;
 import com.example.beautyinside.hospital.PopHospitalDetailActivity;
-import com.example.beautyinside.hospital.RugoHospitalDetailActivity;
+import com.example.beautyinside.hospital.RuhoHospitalDetailActivity;
 import com.example.beautyinside.hospital.ThankyouHospitalDetailActivity;
 import com.example.beautyinside.hospital.TsHospitalDetailActivity;
 import com.example.beautyinside.hospital.WonderHospitalDetailActivity;
@@ -161,7 +161,7 @@ public class HospitalAdapter extends RecyclerView.Adapter<HospitalAdapter.ViewHo
             case "티에스 성형외과":
                 return TsHospitalDetailActivity.class;
             case "루호 성형외과":
-                return RugoHospitalDetailActivity.class;
+                return RuhoHospitalDetailActivity.class;
             case "마인드 성형외과":
                 return MindHospitalDetailActivity.class;
             case "드레스 성형외과":

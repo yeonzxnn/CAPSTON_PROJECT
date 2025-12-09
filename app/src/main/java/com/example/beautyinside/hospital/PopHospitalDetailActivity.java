@@ -87,13 +87,27 @@ public class PopHospitalDetailActivity extends AppCompatActivity {
         });
 
         // 의료진 리스트
+
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this));
         List<DoctorData> doctors = Arrays.asList(
+                // 1. 기존 김동길 원장
                 new DoctorData(
                         "김동길",
-                        R.drawable.doctor_pop_park,
+                        R.drawable.doctor_pop_park, // 기존 이미지 (drawable 폴더에 있어야 함)
                         Arrays.asList("눈성형", "기타")
+                ),
+                // 🔥 2. 류안영 원장 추가
+                new DoctorData(
+                        "류안영",
+                        R.drawable.doctor_pop_ryu, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("리프팅", "눈성형", "기타") // 임시 전문 분야
+                ),
+                // 🔥 3. 서두헌 원장 추가
+                new DoctorData(
+                        "서두헌",
+                        R.drawable.doctor_pop_seo, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("리프팅", "눈성형", "기타") // 임시 전문 분야
                 )
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);

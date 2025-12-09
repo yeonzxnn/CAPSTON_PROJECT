@@ -1,21 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.beautyinside"
-    >
+    package="com.example.beautyinside">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
-    <!-- Android 13 이상 -->
-
-    <!-- Android 12 이하 대비 -->
-
-
-
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -29,7 +22,10 @@
         android:networkSecurityConfig="@xml/network_security_config"
         tools:targetApi="31">
 
-        <!--  SplashActivity를 첫 화면으로 설정 -->
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="3ucsetgjda" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -55,7 +51,6 @@
         </provider>
 
 
-        <!-- 나머지 Activity들도 등록해줘야 돼 -->
         <activity android:name=".MainActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".RegisterActivity" />
@@ -76,12 +71,11 @@
         <activity android:name=".hospital.MlHospitalDetailActivity" />
         <activity android:name=".hospital.NanaHospitalDetailActivity" />
         <activity android:name=".hospital.OnairHospitalDetailActivity" />
-        <activity android:name=".hospital.RugoHospitalDetailActivity" />
+        <activity android:name=".hospital.RuhoHospitalDetailActivity" />
         <activity android:name=".hospital.ThankyouHospitalDetailActivity" />
         <activity android:name=".hospital.WonderHospitalDetailActivity" />
         <activity android:name=".hospital.YellowHospitalDetailActivity" />
         <activity android:name=".hospital.YounoHospitalDetailActivity" />
-
 
 
     </application>

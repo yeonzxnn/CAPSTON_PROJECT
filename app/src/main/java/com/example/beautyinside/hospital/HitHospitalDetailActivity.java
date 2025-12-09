@@ -16,7 +16,6 @@ import com.example.beautyinside.BannerAdapter;
 import com.example.beautyinside.DoctorListAdapter;
 import com.example.beautyinside.ReviewAdapter;
 import com.example.beautyinside.DoctorData;
-import com.example.beautyinside.ReviewData;
 import com.example.beautyinside.ReviewMoreActivity;
 import java.util.Arrays;
 import java.util.List;
@@ -111,14 +110,28 @@ public class HitHospitalDetailActivity extends AppCompatActivity {
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this));
         List<DoctorData> doctors = Arrays.asList(
+                // 1. 기존 한상철 원장
                 new DoctorData(
                         "한상철",
-                        R.drawable.doctor_hit_park,
+                        R.drawable.doctor_hit_han, // 기존 이미지 (doctor_hit_park.png로 추정)
                         Arrays.asList("눈성형", "코성형","기타")
+                ),
+                // 🔥 2. 박정열 원장 추가
+                new DoctorData(
+                        "박정열",
+                        R.drawable.doctor_hit_park, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("눈성형", "리프팅", "코성형", "지방성형")
+                ),
+                // 🔥 3. 유상수 원장 추가
+                new DoctorData(
+                        "유상수",
+                        R.drawable.doctor_hit_yoo, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("눈성형", "코성형", "지방성형", "기타")
                 )
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);
         recyclerDoctors.setAdapter(doctorAdapter);
+
         // 후기 더보기 버튼
         Button showMore = findViewById(R.id.buttonShowMore);
         showMore.setOnClickListener(v -> {
