@@ -2,7 +2,6 @@ package com.example.beautyinside.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +28,7 @@ import com.example.beautyinside.hospital.MlHospitalDetailActivity;
 import com.example.beautyinside.hospital.NanaHospitalDetailActivity;
 import com.example.beautyinside.hospital.OnairHospitalDetailActivity;
 import com.example.beautyinside.hospital.PopHospitalDetailActivity;
-import com.example.beautyinside.hospital.RugoHospitalDetailActivity;
+import com.example.beautyinside.hospital.RuhoHospitalDetailActivity;
 import com.example.beautyinside.hospital.ThankyouHospitalDetailActivity;
 import com.example.beautyinside.hospital.TsHospitalDetailActivity;
 import com.example.beautyinside.hospital.WonderHospitalDetailActivity;
@@ -145,7 +144,7 @@ public class DoctorAdapter extends RecyclerView.Adapter<DoctorAdapter.ViewHolder
                 holder.itemView.getContext().startActivity(intent);
             }
             if (hospital.getName().equals("루호 성형외과")) {
-                Intent intent = new Intent(holder.itemView.getContext(), RugoHospitalDetailActivity.class);
+                Intent intent = new Intent(holder.itemView.getContext(), RuhoHospitalDetailActivity.class);
                 holder.itemView.getContext().startActivity(intent);
             }
             if (hospital.getName().equals("땡큐 성형외과")) {

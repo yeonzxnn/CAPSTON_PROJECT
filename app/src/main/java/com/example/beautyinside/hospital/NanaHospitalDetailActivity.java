@@ -90,7 +90,7 @@ public class NanaHospitalDetailActivity extends AppCompatActivity {
                 R.drawable.nana_5, R.drawable.nana_6
 
         );
-        // 의료진 리스트
+        // 의료진 리스트 (🔥 이 부분을 수정하여 3명으로 만듭니다.)
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<DoctorData> doctors = Arrays.asList(
@@ -103,9 +103,12 @@ public class NanaHospitalDetailActivity extends AppCompatActivity {
                         "위성재",
                         R.drawable.doctor_nana_park2,
                         Arrays.asList("리프팅", "지방성형", "코성형", "눈성형")
+                ),
+                new DoctorData( // 🔥 권효정 원장 추가
+                        "권효정",
+                        R.drawable.doctor_nana_kwon, // 임시 이미지 이름 (drawable 폴더에 파일 필요)
+                        Arrays.asList("눈성형", "리프팅")
                 )
-
-
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);
         recyclerDoctors.setAdapter(doctorAdapter);

@@ -2,7 +2,6 @@ package com.example.beautyinside;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import com.bumptech.glide.Glide;
+
 import com.example.beautyinside.hospital.AmondHospitalDetailActivity;
 import com.example.beautyinside.hospital.BabaHospitalDetailActivity;
 import com.example.beautyinside.hospital.ClasyHospitalDetailActivity;
@@ -26,7 +25,7 @@ import com.example.beautyinside.hospital.MlHospitalDetailActivity;
 import com.example.beautyinside.hospital.NanaHospitalDetailActivity;
 import com.example.beautyinside.hospital.OnairHospitalDetailActivity;
 import com.example.beautyinside.hospital.PopHospitalDetailActivity;
-import com.example.beautyinside.hospital.RugoHospitalDetailActivity;
+import com.example.beautyinside.hospital.RuhoHospitalDetailActivity;
 import com.example.beautyinside.hospital.ThankyouHospitalDetailActivity;
 import com.example.beautyinside.hospital.TsHospitalDetailActivity;
 import com.example.beautyinside.hospital.WonderHospitalDetailActivity;
@@ -35,7 +34,6 @@ import com.example.beautyinside.hospital.YounoHospitalDetailActivity;
 
 import java.util.List;
 import android.util.Log;
-import android.widget.Toast;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -160,7 +158,7 @@ public class SimilarReviewAdapter extends RecyclerView.Adapter<SimilarReviewAdap
             case "티에스성형외과":
                 return TsHospitalDetailActivity.class;
             case "루호성형외과":
-                return RugoHospitalDetailActivity.class;
+                return RuhoHospitalDetailActivity.class;
             case "마인드성형외과":
                 return MindHospitalDetailActivity.class;
             case "드레스성형외과":

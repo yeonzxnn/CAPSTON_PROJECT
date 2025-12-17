@@ -16,7 +16,6 @@ import com.example.beautyinside.BannerAdapter;
 import com.example.beautyinside.DoctorListAdapter;
 import com.example.beautyinside.ReviewAdapter;
 import com.example.beautyinside.DoctorData;
-import com.example.beautyinside.ReviewData;
 import com.example.beautyinside.ReviewMoreActivity;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +27,7 @@ import android.content.Context;
 import android.widget.ImageView;
 import com.example.beautyinside.HospitalData;
 import com.example.beautyinside.FavoriteManager;
-public class RugoHospitalDetailActivity extends AppCompatActivity {
+public class RuhoHospitalDetailActivity extends AppCompatActivity {
 
     private ViewPager2 bannerViewPager;
     private BannerAdapter bannerAdapter;
@@ -47,7 +46,7 @@ public class RugoHospitalDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rugo_hospital_detail);
+        setContentView(R.layout.activity_ruho_hospital_detail);
 
         // 1. 뒤로가기 버튼 연결
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -93,7 +92,7 @@ public class RugoHospitalDetailActivity extends AppCompatActivity {
         Button showMore = findViewById(R.id.buttonShowMore);
         showMore.setOnClickListener(v -> {
 
-            Intent intent = new Intent(RugoHospitalDetailActivity.this, ReviewMoreActivity.class);
+            Intent intent = new Intent(RuhoHospitalDetailActivity.this, ReviewMoreActivity.class);
             intent.putExtra("hospitalName", "루호성형외과");
             startActivity(intent);
         });
@@ -126,21 +125,29 @@ public class RugoHospitalDetailActivity extends AppCompatActivity {
         BannerAdapter adapter = new BannerAdapter(this, imageResIds, R.layout.item_banner); // ← 2개 인자 버전 사용 중
         bannerViewPager.setAdapter(adapter);
 
-        // 의료진 리스트
+// RugoHospitalDetailActivity.java 파일의 onCreate 메소드 내부 (수정 후)
+
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         List<DoctorData> doctors = Arrays.asList(
+                // 1. 기존 박일 의사
                 new DoctorData(
                         "박일",
-                        R.drawable.doctor_ruho_park1,
+                        R.drawable.doctor_ruho_park1, // 기존 이미지 (drawable 폴더에 있어야 함)
                         Arrays.asList("눈성형", "리프팅","필러","지방성형")
                 ),
+                // 2. 기존 위성재 의사
                 new DoctorData(
                         "위성재",
-                        R.drawable.doctor_ruho_park2,
+                        R.drawable.doctor_ruho_park2, // 기존 이미지
                         Arrays.asList("리프팅", "지방성형", "코성형", "눈성형")
+                ),
+                // 🔥 3. 김준영 의사 추가
+                new DoctorData(
+                        "김준영",
+                        R.drawable.doctor_ruho_kim, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("가슴성형", "체형성형", "윤곽수술") // 임시 전문 분야
                 )
-
 
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);

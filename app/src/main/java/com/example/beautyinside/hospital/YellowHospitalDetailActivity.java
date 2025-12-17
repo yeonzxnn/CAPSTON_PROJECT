@@ -16,7 +16,6 @@ import com.example.beautyinside.BannerAdapter;
 import com.example.beautyinside.DoctorListAdapter;
 import com.example.beautyinside.ReviewAdapter;
 import com.example.beautyinside.DoctorData;
-import com.example.beautyinside.ReviewData;
 import com.example.beautyinside.ReviewMoreActivity;
 import java.util.Arrays;
 import java.util.List;
@@ -55,14 +54,22 @@ public class YellowHospitalDetailActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
-        // 의료진 리스트
+// 의료진 리스트
+
         recyclerDoctors = findViewById(R.id.recyclerDoctors);
         recyclerDoctors.setLayoutManager(new LinearLayoutManager(this));
         List<DoctorData> doctors = Arrays.asList(
+                // 1. 기존 이대성 의사
                 new DoctorData(
                         "이대성",
-                        R.drawable.doctor_yellow_park,
+                        R.drawable.doctor_yellow_lee, // 기존 이미지 (drawable 폴더에 있어야 함)
                         Arrays.asList("눈성형", "코성형","가슴성형")
+                ),
+                // 🔥 2. 이태규 의사 추가
+                new DoctorData(
+                        "이태규",
+                        R.drawable.doctor_yellow_lee2, // 새 이미지 이름 설정 (drawable에 파일 필요)
+                        Arrays.asList("눈성형", "리프팅", "필러") // 임시 전문 분야
                 )
         );
         DoctorListAdapter doctorAdapter = new DoctorListAdapter(this, doctors);
