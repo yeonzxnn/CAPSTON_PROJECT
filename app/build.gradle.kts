@@ -33,8 +33,6 @@ android {
     }
 }
 
-// **app/build.gradle.kts 파일의 맨 아래쪽**
-
 dependencies {
     // Firebase 로그인 (이메일/비밀번호 로그인 기능용)
     implementation("com.google.firebase:firebase-auth:22.3.0")
@@ -54,7 +52,7 @@ dependencies {
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
-    implementation("com.naver.maps:map-sdk:3.18.0")
+
 
 
 }
