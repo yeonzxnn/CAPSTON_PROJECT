@@ -6,11 +6,12 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 
-public interface FlaskApiService {
+public interface EyeApiService {
 
     @Multipart
-    @POST("/api/upload_image_result")
-    Call<ResultResponse> sendImageForResult(
-            @Part MultipartBody.Part image
+    @POST("infer")
+    Call<InferResponse> uploadImage(
+            @Part MultipartBody.Part file
     );
+
 }

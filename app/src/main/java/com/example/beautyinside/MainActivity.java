@@ -1,52 +1,45 @@
 package com.example.beautyinside;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
-import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.Settings;
+import android.os.Bundle;
+import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager2.widget.ViewPager2;
-import com.example.beautyinside.FavoriteFragment;
+
 import com.example.beautyinside.ui.LoginActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import android.content.pm.PackageManager;
-import android.widget.Toast;
-import androidx.annotation.NonNull;
-
-import java.util.Arrays;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavigationView;
+
+    // ===============================
+    // 권한 요청 결과 처리
+    // ===============================
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == 100) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "사진 권한 허용됨!", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(this, "사진 권한이 없어서 기능이 제한돼요 ㅠㅠ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        "사진 권한이 없어서 기능이 제한돼요 ㅠㅠ",
+                        Toast.LENGTH_SHORT).show();
             }
         }
     }
 
+    // ===============================
+    // onCreate
+    // ===============================
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,13 +61,15 @@ public class MainActivity extends AppCompatActivity {
                 if (SessionManager.isLoggedIn()) {
                     selectedFragment = new MyPageFragment();
                 } else {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    startActivity(
+                            new Intent(MainActivity.this, LoginActivity.class));
                     return true;
                 }
             }
 
             if (selectedFragment != null) {
-                getSupportFragmentManager().beginTransaction()
+                getSupportFragmentManager()
+                        .beginTransaction()
                         .replace(R.id.container, selectedFragment)
                         .commit();
             }
@@ -82,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-
-        // 기본 화면을 HomeFragment로만 설정
+        // 기본 화면
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
+            getSupportFragmentManager()
+                    .beginTransaction()
                     .replace(R.id.container, new HomeFragment())
                     .commit();
         }

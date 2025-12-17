@@ -5,19 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.database.Cursor;
-import android.widget.Button;
 import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.beautyinside.network.FlaskApiService;
+import com.example.beautyinside.network.EyeApiService;
 import com.example.beautyinside.network.RetrofitClient;
-import com.google.gson.Gson;
+import com.example.beautyinside.network.InferResponse;
+import com.example.beautyinside.ui.ResultActivity;
 
 import java.io.File;
-import java.lang.reflect.Type;
-import java.util.List;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -25,24 +25,22 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.google.gson.reflect.TypeToken;
 
 public class PredictActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_SELECT_IMAGE = 101;
-    private String imagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_similar_reviews);
-
-
-
+        openGallery();
     }
 
     private void openGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        Intent intent = new Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+        );
         startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE);
     }
 
@@ -50,58 +48,91 @@ public class PredictActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == Activity.RESULT_OK && data != null) {
-            Uri selectedImageUri = data.getData();
-            imagePath = getRealPathFromURI(selectedImageUri);
-            if (imagePath != null) {
-                sendImageToServer(imagePath);
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE &&
+                resultCode == Activity.RESULT_OK &&
+                data != null) {
+
+            File imageFile = uriToFile(data.getData());
+            if (imageFile != null) {
+                sendImageToServer(imageFile);
             } else {
-                Toast.makeText(this, "이미지 경로를 불러올 수 없습니다", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "이미지 처리 실패", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private String getRealPathFromURI(Uri uri) {
-        String[] projection = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            int idx = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            cursor.moveToFirst();
-            String result = cursor.getString(idx);
-            cursor.close();
-            return result;
+    private File uriToFile(Uri uri) {
+        try {
+            InputStream in = getContentResolver().openInputStream(uri);
+            File file = File.createTempFile("upload_", ".jpg", getCacheDir());
+            FileOutputStream out = new FileOutputStream(file);
+
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = in.read(buffer)) > 0) {
+                out.write(buffer, 0, len);
+            }
+
+            in.close();
+            out.close();
+            return file;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    private void sendImageToServer(String imagePath) {
-        File file = new File(imagePath);
-        RequestBody requestFile = RequestBody.create(MediaType.parse("image/*"), file);
-        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
+    private void sendImageToServer(File imageFile) {
 
-        FlaskApiService api = RetrofitClient.getApiService();
-        Call<List<ReviewItem>> call = api.sendImage(body);
+        RequestBody req =
+                RequestBody.create(imageFile, MediaType.parse("image/*"));
 
-        call.enqueue(new Callback<List<ReviewItem>>() {
+        MultipartBody.Part body =
+                MultipartBody.Part.createFormData(
+                        "file",
+                        imageFile.getName(),
+                        req
+                );
+
+        EyeApiService api = RetrofitClient.getApiService();
+
+        Call<InferResponse> call = api.uploadImage(body);
+
+        call.enqueue(new Callback<InferResponse>() {
             @Override
-            public void onResponse(Call<List<ReviewItem>> call, Response<List<ReviewItem>> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    List<ReviewItem> resultList = response.body();
+            public void onResponse(
+                    Call<InferResponse> call,
+                    Response<InferResponse> response) {
 
-                    // JSON으로 직렬화해서 다음 액티비티로 넘기기
-                    String jsonList = new Gson().toJson(resultList);
-
-                    Intent intent = new Intent(PredictActivity.this, SimilarReviewActivity.class);
-                    intent.putExtra("reviewList", jsonList);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(PredictActivity.this, "서버 응답 실패", Toast.LENGTH_SHORT).show();
+                if (!response.isSuccessful() || response.body() == null) {
+                    Toast.makeText(PredictActivity.this,
+                            "서버 응답 오류",
+                            Toast.LENGTH_SHORT).show();
+                    return;
                 }
+
+                InferResponse body = response.body();
+
+                String fullUrl =
+                        RetrofitClient.BASE_URL + body.result_image_url;
+
+
+
+                Intent intent =
+                        new Intent(PredictActivity.this, ResultActivity.class);
+                intent.putExtra("result_url", fullUrl);
+                startActivity(intent);
             }
 
             @Override
-            public void onFailure(Call<List<ReviewItem>> call, Throwable t) {
-                Toast.makeText(PredictActivity.this, "서버 통신 오류: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            public void onFailure(
+                    Call<InferResponse> call,
+                    Throwable t) {
+
+                Toast.makeText(PredictActivity.this,
+                        "서버 연결 실패",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
