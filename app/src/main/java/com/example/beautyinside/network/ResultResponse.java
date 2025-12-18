@@ -1,22 +1,27 @@
 package com.example.beautyinside.network;
 
+import java.util.List;
+
 public class ResultResponse {
 
-    private String ai_summary;
-    private String recommend_procedure;
-    private String after_image_url;
-    private String hospital_name;
-    private String hospital_location;
-    private String doctor_name;
-    private String procedure_detail;
-    private String review_text;
+    private boolean success;
+    private String result_image_url;
+    private Analysis analysis;
+    private List<Recommendation> recommendations;
 
-    public String getAiSummary() { return ai_summary; }
-    public String getRecommendProcedure() { return recommend_procedure; }
-    public String getAfterImageUrl() { return after_image_url; }
-    public String getHospitalName() { return hospital_name; }
-    public String getHospitalLocation() { return hospital_location; }
-    public String getDoctorName() { return doctor_name; }
-    public String getProcedureDetail() { return procedure_detail; }
-    public String getReviewText() { return review_text; }
+    public boolean isSuccess() {
+        return success;
+    }
+
+    public String getResultImageUrl() {
+        return result_image_url;
+    }
+
+    public Analysis getAnalysis() {
+        return analysis;
+    }
+
+    public List<Recommendation> getRecommendations() {
+        return recommendations;
+    }
 }

@@ -4,6 +4,7 @@ import com.example.beautyinside.ui.LoginActivity;
 import com.example.beautyinside.ui.ResultActivity;
 import com.example.beautyinside.network.EyeApiService;
 import com.example.beautyinside.network.RetrofitClient;
+import com.example.beautyinside.network.InferResponse;
 
 import android.Manifest;
 import android.app.Activity;
@@ -32,7 +33,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,8 +46,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import com.example.beautyinside.network.InferResponse;
-
 
 public class HomeFragment extends Fragment {
 
@@ -68,7 +66,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.d("AI_FLOW", "BASE_URL = " + RetrofitClient.BASE_URL);
+
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         ImageButton btnAddImage = view.findViewById(R.id.btnAddImage);
@@ -249,10 +247,6 @@ public class HomeFragment extends Fragment {
     // ================= 서버 전송 (핵심) =================
     private void sendImageToServer(File imageFile) {
 
-        Log.d(TAG, "sendImageToServer 호출됨");
-        Log.d(TAG, "파일 경로: " + imageFile.getAbsolutePath());
-        Log.d(TAG, "파일 크기: " + imageFile.length());
-
         RequestBody req =
                 RequestBody.create(MediaType.parse("image/*"), imageFile);
 
@@ -272,38 +266,32 @@ public class HomeFragment extends Fragment {
                     Call<InferResponse> call,
                     Response<InferResponse> response) {
 
-                Log.d(TAG, "onResponse 진입");
-                Log.d(TAG, "HTTP code = " + response.code());
-
-                if (!response.isSuccessful()) {
+                if (!response.isSuccessful() || response.body() == null) {
                     Toast.makeText(requireContext(),
-                            "서버 오류: " + response.code(),
+                            "서버 오류",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                InferResponse body = response.body();
-
-                if (body == null || body.result_image_url == null) {
-                    Toast.makeText(requireContext(),
-                            "결과 이미지 없음",
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                InferResponse res = response.body();
 
                 String fullUrl =
                         RetrofitClient.BASE_URL.replaceAll("/$", "")
-                                + body.result_image_url;
-
-
-                Log.d(TAG, "결과 이미지 URL = " + fullUrl);
+                                + res.result_image_url;
 
                 Intent intent =
                         new Intent(requireContext(), ResultActivity.class);
-                intent.putExtra("result_url", fullUrl);
-                startActivity(intent);
 
-                Log.d(TAG, "ResultActivity 이동 완료");
+                // 🔹 이미지
+                intent.putExtra("result_url", fullUrl);
+
+                // 🔥 분석 결과 전달
+                intent.putExtra("eye_type", res.analysis.getEyeType());
+                intent.putExtra("symmetry", res.analysis.getSymmetry());
+                intent.putExtra("size_ratio", res.analysis.getSizeRatio());
+                intent.putExtra("recommendation", res.analysis.getRecommendation());
+
+                startActivity(intent);
             }
 
             @Override
@@ -311,7 +299,6 @@ public class HomeFragment extends Fragment {
                     Call<InferResponse> call,
                     Throwable t) {
 
-                Log.e(TAG, "onFailure 발생", t);
                 Toast.makeText(requireContext(),
                         "서버 연결 실패",
                         Toast.LENGTH_SHORT).show();
